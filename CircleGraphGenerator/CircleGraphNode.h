@@ -5,12 +5,17 @@
  */
 
 #include "Graph.h"
+#include "CircleGraphGenerator.h"
+
+class CircleGraph;
 
 class CircleGraphNode {
     Graph graph;
     vector<CircleGraphNode*> children;
     /* How many parents does this node have. The initial value is zero */
     int level;
+
+    friend std::ostream& operator<<(std::ostream& os, const CircleGraph& graph);
 
 public:
     CircleGraphNode(Graph& g) : CircleGraphNode(g, 0) {}
@@ -21,5 +26,9 @@ public:
      * Attaches a graph to this node. 
      * Returns true if attaching is success (i.e. this is a subgraph of `g`), false otherwise   
      */
-    bool attach(Graph &g, int max_level);
+    bool attach(Graph& g, int max_level);
+    /**
+     * Use recursion to update the frequency of the edges 
+     */
+    void updateWeight(CircleGraphGenerator::EdgeFrequencyMap& freq);
 };

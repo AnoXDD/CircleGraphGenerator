@@ -6,9 +6,11 @@
 
 #include <string>
 #include <vector>
+#include <ostream>
 
 #include "Graph.h"
 #include "CircleGraphNode.h"
+#include "CircleGraphGenerator.h"
 
 using namespace std;
 
@@ -18,16 +20,22 @@ class CircleGraph {
     int layers; // todo init = 0
 
 public:
-    CircleGraph();
+    CircleGraph(): center(nullptr), layers(0) {}
     ~CircleGraph();
-
-    /**
-     * Return the circle graph in the string form
-     */
-    string getString();
 
     /**
      * Adds a new layer of graph
      */
     void addLayer(vector<Graph>& g);
+
+    CircleGraphNode* getCenter() const {
+        return center;
+    }
+
+    /**
+     * Update the weight of all the edges of this circle graph
+     */
+    void updateWeight(CircleGraphGenerator::EdgeFrequencyMap& freq);
 };
+
+std::ostream& operator<<(std::ostream& os, const CircleGraph& graph);

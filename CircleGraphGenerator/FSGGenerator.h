@@ -8,32 +8,33 @@
 
 #include <vector>
 #include "Graph.h"
+#include "GraphList.h"
+
+using namespace std;
+
+class GraphList;
 
 class FSGGenerator {
-
-    /** The threshold */
-    float t;
-
     /* When recursively generating the FSG's, this is the variable to store the result */
     vector<Graph> currentFSG;
-    /* All the graphs */
-    vector<Graph> *allGraphs;
+    GraphList graphList;
 
     /**
-     * Recursively generating next FSG
+     * Find the smallest FSG, i.e. the FSG's with just an edge
      */
-    void findNextFSG();
+    void findSmallestFSG();
 
-    // Todo consider just using one function to avoid object creating
-    // void generatePossible();
-    // void generateEligible();
+    void generatePossibleFSG();
+    void filterEligibleFSG();
 
 public:
-    FSGGenerator(vector<Graph> *g);
+
+    explicit FSGGenerator(vector<Graph>* g) : graphList(g) {}
+
     ~FSGGenerator();
 
     /**
      * Generates the subsequent graphs given a threshold
      */
-    vector<Graph> getFSG(float threshold);
+    vector<Graph> getFSG(float threshold_percent);
 };

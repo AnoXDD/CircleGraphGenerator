@@ -116,7 +116,7 @@
     <ClInclude Include="CircleGraph.h" />
     <ClInclude Include="FSGGenerator.h" />
     <ClInclude Include="Graph.h" />
-    <ClInclude Include="Vertex.h" />
+    <ClInclude Include="GraphList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CircleGraphGenerator.cpp" />
@@ -125,8 +125,8 @@
     <ClCompile Include="CircleGraph.cpp" />
     <ClCompile Include="FSGGenerator.cpp" />
     <ClCompile Include="Graph.cpp" />
+    <ClCompile Include="GraphList.cpp" />
     <ClCompile Include="Runner.cpp" />
-    <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

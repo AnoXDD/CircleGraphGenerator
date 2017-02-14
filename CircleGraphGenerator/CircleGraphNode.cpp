@@ -1,4 +1,5 @@
 #include "CircleGraphNode.h"
+#include <numeric>
 
 
 CircleGraphNode::~CircleGraphNode() {
@@ -26,4 +27,17 @@ bool CircleGraphNode::attach(Graph& g, int max_level) {
     }
 
     return false;
+}
+
+void CircleGraphNode::updateWeight(CircleGraphGenerator::EdgeFrequencyMap& freq) {
+    auto& list = graph.getList();
+    for (auto p : list) {
+        auto& v = freq[p.first];
+        // Here we use the average
+        graph.set(p.first, std::accumulate(v.begin(), v.end(), 0.0) / v.size());
+    }
+
+    for (auto child : this->children) {
+        child->updateWeight(freq);
+    }
 }

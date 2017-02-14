@@ -6,10 +6,11 @@
 
 #pragma once
 
+#include "Graph.h"
+
 #include <vector>
 
-#include "CircleGraph.h"
-#include "Graph.h"
+class CircleGraph;
 
 class CircleGraphGenerator {
     /* The constants to hold the frequency to start and how much to decrease after that */
@@ -18,8 +19,15 @@ class CircleGraphGenerator {
 
     vector<Graph> graphs;
 public:
+
+    typedef unordered_map<Graph::Edge, vector<float>, Graph::EdgeHash, Graph::EdgeEqual> EdgeFrequencyMap;
+
     explicit CircleGraphGenerator(vector<Graph>& g): graphs(g){}
-    ~CircleGraphGenerator();
+
+    /**
+     * Calculate the weight of all the edges
+     */
+    void processGraphWeight(CircleGraph&);
 
     CircleGraph get();
 };

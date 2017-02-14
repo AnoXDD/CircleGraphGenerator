@@ -30,10 +30,10 @@
     <ClInclude Include="CircleGraph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vertex.h">
+    <ClInclude Include="CircleGraphNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CircleGraphNode.h">
+    <ClInclude Include="GraphList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,13 +53,13 @@
     <ClCompile Include="CircleGraph.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vertex.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Runner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CircleGraphNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

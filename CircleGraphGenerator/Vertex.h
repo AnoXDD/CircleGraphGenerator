@@ -16,8 +16,12 @@ struct Vertex {
     string word;
     Type type;
 
+    Vertex(string word, Type type): word(word), type(type) {}
+
     /**
      * The comparator of Vertex
      */
-    inline bool operator=(const Vertex& v) const;
+    bool operator==(const Vertex& v) const {
+        return this->word == v.word && this->type == v.type;
+    }
 };
