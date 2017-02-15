@@ -27,6 +27,18 @@ void FSGGenerator::findSmallestFSG() {
     // Now we have currentFSG of 2-FSG
 }
 
+void FSGGenerator::generatePossibleFSG() {
+    vector<Graph> possible_graphs;
+
+    for (int i = 0; i < graphList->size() - 1; ++i) {
+        for (int j = i + 1; j < graphList->size(); ++j) {
+            possible_graphs.push_back(graphList->at(i) + graphList->at(j));
+        }
+    }
+
+    std::swap(possible_graphs, this->currentFSG);
+}
+
 void FSGGenerator::filterEligibleFSG() {
     vector<Graph> result;
     for (auto possible_graph : this->currentFSG) {

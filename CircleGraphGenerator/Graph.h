@@ -40,10 +40,20 @@ public:
     typedef pair<Vertex, Vertex> Edge;
 
     struct EdgeHash {
-        std::hash<std::string> hasher;
-
+        /**
+         * Taken from http://stackoverflow.com/questions/2624192/good-hash-function-for-strings
+         */
         size_t operator()(const Edge& e) const {
-            return hasher(e.first + e.second);
+            size_t hash = 7;
+
+            for (auto c : e.first) {
+                hash = hash * 31 + c;
+            }
+            for (auto c : e.second) {
+                hash = hash * 31 + c;
+            }
+
+            return hash;
         }
     };
 
@@ -73,7 +83,7 @@ public:
     /**
      * Returns if this graph has this edge
      */
-    bool hasEdge(Edge& edge) const;
+    bool hasEdge(const Edge& edge) const;
 
     /**
      * Check if this graph is an eligible graph in this graph list
@@ -111,6 +121,10 @@ public:
      * Returns a valid graph if the operation is valid (i.e. `g` is a subgraph of this graph), an exception will be thrown if operation is invalid
      */
     Graph operator-(const Graph& g) const;
+    /**
+     * Join two graphs and create a new graph consisting the edges of the two (smaller) graphs
+     */
+    Graph operator+(const Graph& g) const;
 };
 
 ostream& operator<<(ostream& os, const Graph& g);

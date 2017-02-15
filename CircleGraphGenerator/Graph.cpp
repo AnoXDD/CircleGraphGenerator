@@ -29,7 +29,7 @@ bool Graph::hasSubgraph(Graph& graph) const {
     return true;
 }
 
-bool Graph::hasEdge(Edge& edge) const {
+bool Graph::hasEdge(const Edge& edge) const {
     return list.count(edge);
 }
 
@@ -113,6 +113,19 @@ Graph Graph::operator-(const Graph& g) const {
     for (auto p : g.list) {
         if (!result.remove(p.first)) {
             throw std::invalid_argument("The difference cannot be calculated because one is not the subgraph of the other");
+        }
+    }
+
+    return result;
+}
+
+Graph Graph::operator+(const Graph& g) const {
+    Graph result(*this);
+
+    for (auto edge_pair: g.list) {
+        auto& edge = edge_pair.first;
+        if (!result.hasEdge(edge)) {
+            result.add(edge);
         }
     }
 

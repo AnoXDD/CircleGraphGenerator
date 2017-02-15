@@ -24,6 +24,10 @@ public:
         return *data;
     }
 
+    vector<Graph>* operator->() const {
+        return data;
+    }
+
     void calculateMaxSize();
 
     /**
