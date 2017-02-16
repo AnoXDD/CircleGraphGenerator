@@ -31,8 +31,6 @@ public:
 
     explicit FSGGenerator(vector<Graph>* g) : graphList(g) {}
 
-    ~FSGGenerator();
-
     /**
      * Generates the subsequent graphs given a threshold
      */

@@ -4,16 +4,17 @@
 
 #include <numeric>
 #include <algorithm>
+#include <unordered_map>
 
 
 void FSGGenerator::findSmallestFSG() {
-    unordered_map<Graph::Edge, int> freq;
+    unordered_map<Graph::Edge, int, Graph::EdgeHash, Graph::EdgeEqual> freq;
     for (auto graph : *graphList) {
         for (auto p : graph.list) {
             ++freq[p.first];
         }
     }
-
+   
     currentFSG.clear();
     for (auto p : freq) {
         if (p.second >= this->graphList.getThreshold()) {

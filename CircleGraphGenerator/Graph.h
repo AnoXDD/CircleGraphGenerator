@@ -33,27 +33,31 @@ public:
     /**
      *  A specially designed "vertex". The last character is the type, and the other characters are the actual node
      */
-    typedef string Vertex;
+    typedef std::string Vertex;
     /**
      * The edge should guarantee that the first is smaller than the second
      */
     typedef pair<Vertex, Vertex> Edge;
 
     struct EdgeHash {
-        /**
-         * Taken from http://stackoverflow.com/questions/2624192/good-hash-function-for-strings
-         */
+//        /**
+//         * Taken from http://stackoverflow.com/questions/2624192/good-hash-function-for-strings
+//         */
+//        size_t operator()(const Edge& e) const {
+//            size_t hash = 7;
+//
+//            for (auto c : e.first) {
+//                hash = hash * 31 + c;
+//            }
+//            for (auto c : e.second) {
+//                hash = hash * 31 + c;
+//            }
+//
+//            return hash;
+//        }
+
         size_t operator()(const Edge& e) const {
-            size_t hash = 7;
-
-            for (auto c : e.first) {
-                hash = hash * 31 + c;
-            }
-            for (auto c : e.second) {
-                hash = hash * 31 + c;
-            }
-
-            return hash;
+            return std::hash<std::string>()(e.first + e.second);
         }
     };
 

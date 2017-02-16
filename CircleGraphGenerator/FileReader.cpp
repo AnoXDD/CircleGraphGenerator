@@ -2,6 +2,8 @@
 
 #include <fstream>
 #include <iostream>
+#include <algorithm>
+#include <unordered_map>
 
 vector<string> FileReader::split(const string& s) const {
     vector<string> elems;
@@ -47,7 +49,7 @@ bool FileReader::updateOriginalWordDictionary() {
             original_word[s] = v[0];
         }
     }
-    
+
     cout << "Original word groups read: " << original_word.size() << endl;
     return true;
 }
@@ -65,12 +67,13 @@ vector<Graph> FileReader::getGraphs(string filename) {
 
     ifstream file(filename);
     if (!file.is_open()) {
-        cerr << "Unable to open file " << filename << endl;
-        exit(1);
+        throw std::runtime_error("Unable to open file " + filename);
     }
 
     string line;
     while (getline(file, line)) {
+        // Convert to lower case. Comment this line for test purpose
+        //        std::transform(line.begin(), line.end(), line.begin(), ::tolower);
         auto v = split(line);
         string s1, s2;
         char c1 = 0, c2 = 0;

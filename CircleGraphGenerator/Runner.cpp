@@ -10,15 +10,19 @@
 using namespace std;
 
 int main() {
-    cout << "Hello world" << endl;
-    vector<Graph> graphs; {
-        // When reading the data, FileReader will also read stop words and instruction on how to group vertices. This makes the compiler recycle those memory after reading all the data
-        FileReader file_reader;
-        graphs = file_reader.getGraphs("data.txt");
+    try {
+        vector<Graph> graphs; {
+            // When reading the data, FileReader will also read stop words and instruction on how to group vertices. This makes the compiler recycle those memory after reading all the data
+            FileReader file_reader;
+            graphs = file_reader.getGraphs("data.txt");
+        }
+
+        CircleGraphGenerator ccgenerator(graphs);
+        auto circle_graph = ccgenerator.get();
+
+        cout << circle_graph << endl;
+    } catch (const std::exception& e) {
+        cerr << e.what() << endl;
     }
-
-    CircleGraphGenerator ccgenerator(graphs);
-    auto circle_graph = ccgenerator.get();
-
-    cout << circle_graph << endl;
+    system("pause");
 }

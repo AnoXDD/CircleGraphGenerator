@@ -9,6 +9,7 @@
 #include "Graph.h"
 
 #include <vector>
+#include <unordered_map>
 
 class CircleGraph;
 
