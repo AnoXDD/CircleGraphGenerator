@@ -12,10 +12,15 @@ bool CircleGraph::addLayer(vector<Graph>& graphs) {
         this->center = new CircleGraphNode(graphs[0]);
     } else {
         ++layers;
+        bool success = false;
         for (auto& graph : graphs) {
             if (!center->attach(graph, layers)) {
+                if (!success) {
+                    --layers;
+                }
                 return false;
             }
+            success = true;
         }
     }
 

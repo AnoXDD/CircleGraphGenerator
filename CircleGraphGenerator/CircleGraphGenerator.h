@@ -19,6 +19,11 @@ class CircleGraphGenerator {
     const float DELTA = .05f;
 
     vector<Graph> graphs;
+
+    /**
+     * Returns if two vectors are the same
+     */
+    bool isEqualResult(const vector<Graph>& graphs, const vector<Graph>& vector);
 public:
 
     typedef unordered_map<Graph::Edge, vector<float>, Graph::EdgeHash, Graph::EdgeEqual> EdgeFrequencyMap;

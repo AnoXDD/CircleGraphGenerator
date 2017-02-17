@@ -12,20 +12,22 @@ bool CircleGraphNode::attach(Graph& g, int max_level) {
     try {
         Graph diff = g - this->graph;
 
-        if (this->level == max_level) {
-            if (diff.empty()) {
-                return false;
-            }
-
-            this->children.push_back(new CircleGraphNode(diff, this->level + 1));
-            return true;
+        // Test if they have something in common
+        if (diff.empty()) {
+            return false;
         }
 
-        for (auto i = 0; i < children.size(); ++i) {
-            if (children[i]->attach(diff, max_level)) {
-                return true;
+        // Try to attach it to any children (if any)
+        if (this->level < max_level && !this->children.empty()) {
+            for (auto i = 0; i < children.size(); ++i) {
+                if (children[i]->attach(diff, max_level)) {
+                    return true;
+                }
             }
         }
+
+        this->children.push_back(new CircleGraphNode(diff, this->level + 1));
+        return true;
     } catch (...) {
         // Do nothing, it happens because of the first line of the try block
     }
