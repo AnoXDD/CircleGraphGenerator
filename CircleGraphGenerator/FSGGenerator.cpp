@@ -126,7 +126,16 @@ vector<Graph> FSGGenerator::getFSG(float threshold_percent) {
     }
 
     if (this->currentFSG.empty()) {
+        // First time setup
         findSmallestFSG();
+
+        if (this->currentFSG.empty()) {
+            // Oops, nothing found
+            return vector<Graph>{};
+        }
+        if (this->currentFSG.size() == 1) {
+            return this->currentFSG;
+        }
     }
 
     // Recurse to get FSG
