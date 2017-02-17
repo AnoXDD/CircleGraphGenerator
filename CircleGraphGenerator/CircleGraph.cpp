@@ -4,18 +4,22 @@
 
 CircleGraph::~CircleGraph() {}
 
-void CircleGraph::addLayer(vector<Graph>& graphs) {
+bool CircleGraph::addLayer(vector<Graph>& graphs) {
     if (!center) {
         if (graphs.size() > 1) {
-            throw exception("Multiple centers detected");
+            throw exception("Multiple center graphs detected");
         }
         this->center = new CircleGraphNode(graphs[0]);
     } else {
         ++layers;
         for (auto& graph : graphs) {
-            center->attach(graph, layers);
+            if (!center->attach(graph, layers)) {
+                return false;
+            }
         }
     }
+
+    return true;
 }
 
 void CircleGraph::updateWeight(CircleGraphGenerator::EdgeFrequencyMap& freq) {
@@ -30,16 +34,17 @@ std::ostream& operator<<(std::ostream& os, const CircleGraph& graph) {
     while (!q.empty()) {
         auto top = q.front();
         os << top->graph;
+        q.pop();
 
-        if (q.front()->level != top->level) {
+        for (auto child : top->children) {
+            q.push(child);
+        }
+
+        if (q.empty() || q.front()->level != top->level) {
             // Start a new line because that's a new level
             os << endl;
         } else {
             os << ",";
-        }
-
-        for (auto child: top->children) {
-            q.push(child);
         }
     }
 

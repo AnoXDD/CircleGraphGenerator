@@ -28,12 +28,32 @@ void FSGGenerator::findSmallestFSG() {
     // Now we have currentFSG of 2-FSG
 }
 
+void FSGGenerator::removeDuplicateFSG() {
+    vector<Graph> uniques;
+
+    // Use the naive way to do this, but may be faster than unordered_map
+    for (int i = 0; i < this->currentFSG.size(); ++i) {
+        auto j = 0;
+        for (; j < i; ++j) {
+            if (currentFSG[i] == currentFSG[j]) {
+                break;
+            }
+        }
+        // No break
+        if (j == i) {
+            uniques.push_back(currentFSG[i]);
+        }
+    }
+
+    std::swap(uniques, this->currentFSG);
+}
+
 void FSGGenerator::generatePossibleFSG() {
     vector<Graph> possible_graphs;
 
-    for (int i = 0; i < graphList->size() - 1; ++i) {
-        for (int j = i + 1; j < graphList->size(); ++j) {
-            possible_graphs.push_back(graphList->at(i) + graphList->at(j));
+    for (int i = 0; i < currentFSG.size() - 1; ++i) {
+        for (int j = i + 1; j < currentFSG.size(); ++j) {
+            possible_graphs.push_back(currentFSG[i] + currentFSG[j]);
         }
     }
 
@@ -56,6 +76,10 @@ vector<Graph> FSGGenerator::getFSG(float threshold_percent) {
     // Calculate the threshold
     this->graphList.setThresholdPercent(threshold_percent);
 
+    if (this->graphList->size() == 1) {
+        return *this->graphList;
+    }    
+
     findSmallestFSG();
 
     // Recurse to get FSG
@@ -64,10 +88,12 @@ vector<Graph> FSGGenerator::getFSG(float threshold_percent) {
     while (this->currentFSG.size()) {
         // Avoid dead loop
         if (guardian++ > this->graphList.getMaxSize()) {
-            throw runtime_error("Too many loops in generating FSG of threshold: " + std::to_string(threshold_percent));
+            break;
+//            throw runtime_error("Too many loops in generating FSG of threshold: " + std::to_string(threshold_percent));
         }
 
         generatePossibleFSG();
+        removeDuplicateFSG();
         filterEligibleFSG();
 
         lastFSG.clear();
@@ -77,7 +103,7 @@ vector<Graph> FSGGenerator::getFSG(float threshold_percent) {
             }
         }
 
-        if (lastFSG.empty()) {
+        if (lastFSG.empty() || this->currentFSG.size() == 1) {
             return this->currentFSG;
         }
     }

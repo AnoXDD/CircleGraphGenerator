@@ -113,7 +113,10 @@ public:
      */
     void set(const Edge& e, float new_weight);
 
-    inline bool empty() const;
+    bool empty() const;
+    /**
+     * Returns the number of vertices
+     */
     size_t size() const;
 
     const EdgeMap& getList() const {
@@ -129,6 +132,10 @@ public:
      * Join two graphs and create a new graph consisting the edges of the two (smaller) graphs
      */
     Graph operator+(const Graph& g) const;
+    /**
+     * By equal, it just checks if `list` is equal
+     */
+    bool operator==(const Graph& g) const;
 };
 
 ostream& operator<<(ostream& os, const Graph& g);

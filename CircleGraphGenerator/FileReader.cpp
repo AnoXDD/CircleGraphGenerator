@@ -109,13 +109,19 @@ vector<Graph> FileReader::getGraphs(string filename) {
         }
 
         // Map to another word
-        s1 = original_word[s1];
-        s2 = original_word[s2];
-
-        if (m.count(id)) {
-            // This graph has already been created
-            graphs[m[id]].add(s1, c1, s2, c2, weight);
+        if (original_word.count(s1)) {
+            s1 = original_word[s1];
         }
+        if (original_word.count(s2)) {
+            s2 = original_word[s2];
+        }
+
+        if (!m.count(id)) {
+            // Create a new one
+            m[id] = graphs.size();
+            graphs.push_back(Graph());
+        } 
+        graphs[m[id]].add(s1, c1, s2, c2, weight);
     }
 
     return graphs;

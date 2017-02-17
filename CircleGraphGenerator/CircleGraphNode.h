@@ -24,7 +24,7 @@ public:
 
     /**
      * Attaches a graph to this node. 
-     * Returns true if attaching is success (i.e. this is a subgraph of `g`), false otherwise   
+     * Returns true if attaching is success (i.e. this is a proper subgraph of `g`), false otherwise 
      */
     bool attach(Graph& g, int max_level);
     /**

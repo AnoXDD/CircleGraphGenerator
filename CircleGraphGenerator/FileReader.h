@@ -24,12 +24,12 @@ class FileReader {
      */
     enum Property {Concept1, Concept2, Type1, Type2, GraphNo, Weight};
 
-    const vector<Property> FORMAT = {Concept1, Type1, Concept2, Type2, Weight, GraphNo};
-    const string STOPWORD_FILE = "stopwords.txt";    // Format: one line per stop word
+    const vector<Property> FORMAT = {Concept1, Type1, Concept2, Type2, GraphNo, Weight};
+    const string STOPWORD_FILE = "stopwords.txt"; // Format: one line per stop word
     /**
      * Format: one line per group of words. The first word is the original word, and the others are the alternative forms of the first word. Separated by comma
      */
-    const string ORIGINAL_WORD_FILE = "original.txt"; 
+    const string ORIGINAL_WORD_FILE = "original.txt";
 
     unordered_set<string> stop_words;
     unordered_map<string, string> original_word;
@@ -52,5 +52,5 @@ class FileReader {
 public:
     FileReader();
 
-    vector<Graph> getGraphs(string filename) ;
+    vector<Graph> getGraphs(string filename);
 };

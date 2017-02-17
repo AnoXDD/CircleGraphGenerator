@@ -8,10 +8,10 @@ string Graph::convertListEntryToString(const pair<Edge, float>& p) {
     auto v2 = p.first.second;
     auto v2t = v2.back();
 
-    v1.back() = '[';
-    v2.back() = '[';
+    v1.back() = '(';
+    v2.back() = '(';
 
-    return "<{" + v1 + v1t + "}(" + std::to_string(p.second) + "){" + v2 + v2t + "}>";
+    return "{" + v1 + v1t + ")|" + std::to_string(p.second) + "|" + v2 + v2t + ")}";
 }
 
 bool Graph::hasSubgraph(Graph& graph) const {
@@ -130,6 +130,20 @@ Graph Graph::operator+(const Graph& g) const {
     }
 
     return result;
+}
+
+bool Graph::operator==(const Graph& g) const {
+    if (this->list.size() != g.size()) {
+        return false;
+    }
+
+    for (auto p : g.list) {
+        if (!this->hasEdge(p.first)) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 ostream& operator<<(ostream& os, const Graph& g) {

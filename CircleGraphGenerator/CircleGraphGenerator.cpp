@@ -3,6 +3,10 @@
 #include "CircleGraph.h"
 
 void CircleGraphGenerator::processGraphWeight(CircleGraph& circle_graph) {
+    if (!circle_graph.getCenter()) {
+        return;
+    }
+
     // First, get the data of all the edges
     EdgeFrequencyMap freq;
     for (auto g : this->graphs) {
@@ -23,7 +27,7 @@ CircleGraph CircleGraphGenerator::get() {
     for (auto threshold = STARTING_THRESHOLD; threshold >= 0; threshold -= DELTA) {
         auto results = fsg_generator.getFSG(threshold);
         if (!results.empty()) {
-            circle_graph.addLayer(results);
+            circle_graph.addLayer(results); // Returns false if nothing added
         }
     }
 

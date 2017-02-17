@@ -10,9 +10,13 @@ CircleGraphNode::~CircleGraphNode() {
 
 bool CircleGraphNode::attach(Graph& g, int max_level) {
     try {
-        auto diff = g - this->graph;
+        Graph diff = g - this->graph;
 
         if (this->level == max_level) {
+            if (diff.empty()) {
+                return false;
+            }
+
             this->children.push_back(new CircleGraphNode(diff, this->level + 1));
             return true;
         }

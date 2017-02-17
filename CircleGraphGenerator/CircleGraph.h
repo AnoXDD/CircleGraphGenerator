@@ -24,9 +24,9 @@ public:
     ~CircleGraph();
 
     /**
-     * Adds a new layer of graph
+     * Adds a new layer of graph. Returns true if a new layer is added
      */
-    void addLayer(vector<Graph>& g);
+    bool addLayer(vector<Graph>& g);
 
     CircleGraphNode* getCenter() const {
         return center;
