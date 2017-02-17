@@ -133,7 +133,7 @@ Graph Graph::operator+(const Graph& g) const {
 }
 
 bool Graph::operator==(const Graph& g) const {
-    if (this->list.size() != g.size()) {
+    if (this->list.size() != g.list.size()) {
         return false;
     }
 

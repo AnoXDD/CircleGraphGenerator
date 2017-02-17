@@ -29,3 +29,10 @@ bool GraphList::hasFrequentEdge(Graph::Edge& edge) const {
 
     return count >= this->threshold;
 }
+
+bool GraphList::changeThresholdPercent(float threshold_percent) {
+    auto old = this->threshold;
+    this->threshold = std::min(static_cast<int>(ceil(threshold_percent * data->size())), static_cast<int>(data->size()));
+
+    return old != this->threshold;
+}

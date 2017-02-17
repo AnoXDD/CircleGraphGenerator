@@ -23,6 +23,10 @@ bool CircleGraphNode::attach(Graph& g, int max_level) {
                 if (children[i]->attach(diff, max_level)) {
                     return true;
                 }
+
+                if (children[i]->graph == diff) {
+                    return false;
+                }
             }
         }
 

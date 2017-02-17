@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <algorithm>
 
 #include "Graph.h"
 
@@ -43,9 +44,10 @@ public:
         return this->threshold;
     }
 
-    void setThresholdPercent(float threshold_percent) {
-        this->threshold = threshold_percent * data->size();
-    }
+    /**
+     * Change the current threshold percent, and return if it actually changes
+     */
+    bool changeThresholdPercent(float threshold_percent);
 
     int getMaxSize() const {
         return this->max_size;

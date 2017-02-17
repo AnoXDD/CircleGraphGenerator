@@ -14,7 +14,7 @@ void FSGGenerator::findSmallestFSG() {
             ++freq[p.first];
         }
     }
-   
+
     currentFSG.clear();
     for (auto p : freq) {
         if (p.second >= this->graphList.getThreshold()) {
@@ -34,13 +34,13 @@ void FSGGenerator::removeDuplicateFSG() {
     // Use the naive way to do this, but may be faster than unordered_map
     for (int i = 0; i < this->currentFSG.size(); ++i) {
         auto j = 0;
-        for (; j < i; ++j) {
+        for (; j < uniques.size(); ++j) {
             if (currentFSG[i] == currentFSG[j]) {
                 break;
             }
         }
         // No break
-        if (j == i) {
+        if (j == uniques.size()) {
             uniques.push_back(currentFSG[i]);
         }
     }
@@ -74,12 +74,15 @@ void FSGGenerator::filterEligibleFSG() {
 
 vector<Graph> FSGGenerator::getFSG(float threshold_percent) {
     // Calculate the threshold
-    this->graphList.setThresholdPercent(threshold_percent);
+    if (!this->graphList.changeThresholdPercent(threshold_percent)) {
+        // Not changed
+        return vector<Graph>{};
+    }
 
     // Return immediately if there is only one graph or the threshold is one, which means every graph meets the criteria
     if (this->graphList->size() == 1 || this->graphList.getThreshold() <= 1) {
         return *this->graphList;
-    }    
+    }
 
     findSmallestFSG();
 
@@ -90,12 +93,12 @@ vector<Graph> FSGGenerator::getFSG(float threshold_percent) {
         // Avoid dead loop
         if (guardian++ > this->graphList.getMaxSize()) {
             break;
-//            throw runtime_error("Too many loops in generating FSG of threshold: " + std::to_string(threshold_percent));
+            //            throw runtime_error("Too many loops in generating FSG of threshold: " + std::to_string(threshold_percent));
         }
 
         generatePossibleFSG();
-        removeDuplicateFSG();
         filterEligibleFSG();
+        removeDuplicateFSG();
 
         lastFSG.clear();
         for (auto g : this->currentFSG) {
@@ -110,5 +113,6 @@ vector<Graph> FSGGenerator::getFSG(float threshold_percent) {
     }
 
     // The only case is when findSmallestFSG() returns an empty one;
+    removeDuplicateFSG();
     return this->currentFSG;
 }
