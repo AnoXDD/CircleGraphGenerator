@@ -14,13 +14,14 @@ bool CircleGraph::addLayer(vector<Graph>& graphs) {
         ++layers;
         bool success = false;
         for (auto& graph : graphs) {
-            if (!center->attach(graph, layers)) {
-                if (!success) {
-                    --layers;
-                }
-                return false;
+            if (center->attach(graph, layers)) {
+                success = true;
             }
-            success = true;
+        }
+
+        if (!success) {
+            --layers;
+            return false;
         }
     }
 

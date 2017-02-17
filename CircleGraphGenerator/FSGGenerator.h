@@ -25,7 +25,7 @@ class FSGGenerator {
     void findSmallestFSG();
 
     void removeDuplicateFSG();
-    void generatePossibleFSG();
+    void generatePossibleFSG(int current_size);
     void filterEligibleFSG();
 
 public:

@@ -118,6 +118,10 @@ public:
      * Returns the number of vertices
      */
     size_t size() const;
+    /**
+     * Returns the number of edges
+     */
+    size_t edgeSize() const;
 
     const EdgeMap& getList() const {
         return this->list;

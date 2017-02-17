@@ -107,6 +107,10 @@ size_t Graph::size() const {
     return degree.size();
 }
 
+size_t Graph::edgeSize() const {
+    return this->list.size();
+}
+
 Graph Graph::operator-(const Graph& g) const {
     Graph result(*this);
 
@@ -136,9 +140,10 @@ bool Graph::operator==(const Graph& g) const {
     if (this->list.size() != g.list.size()) {
         return false;
     }
-
-    for (auto p : g.list) {
-        if (!this->hasEdge(p.first)) {
+    
+    auto g_list(g.list);
+    for (auto p : this->list) {
+        if (!g_list.erase(p.first)) {
             return false;
         }
     }

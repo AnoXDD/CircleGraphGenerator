@@ -48,12 +48,32 @@ void FSGGenerator::removeDuplicateFSG() {
     std::swap(uniques, this->currentFSG);
 }
 
-void FSGGenerator::generatePossibleFSG() {
+void FSGGenerator::generatePossibleFSG(int current_size) {
     vector<Graph> possible_graphs;
 
-    for (int i = 0; i < currentFSG.size() - 1; ++i) {
-        for (int j = i + 1; j < currentFSG.size(); ++j) {
-            possible_graphs.push_back(currentFSG[i] + currentFSG[j]);
+    if (currentFSG.size() == 1) {
+        auto& graph = currentFSG[0];
+
+        for (auto& raw_graph : *graphList) {
+            if (raw_graph.hasSubgraph(graph)) {
+                // For each raw graph, add an edge to the graph
+                auto diff = raw_graph - graph;
+                auto& edges = diff.getList();
+                for (auto p:edges) {
+                    auto g(graph);
+                    g.add(p.first);
+                    possible_graphs.push_back(g);
+                }
+            }
+        }
+    } else {
+        for (int i = 0; i < static_cast<int>(currentFSG.size()) - 1; ++i) {
+            for (int j = i + 1; j < currentFSG.size(); ++j) {
+                auto result = currentFSG[i] + currentFSG[j];
+                if (result.edgeSize() == current_size) {
+                    possible_graphs.push_back(currentFSG[i] + currentFSG[j]);
+                }
+            }
         }
     }
 
@@ -61,15 +81,19 @@ void FSGGenerator::generatePossibleFSG() {
 }
 
 void FSGGenerator::filterEligibleFSG() {
-    vector<Graph> result;
-    for (auto possible_graph : this->currentFSG) {
-        if (possible_graph.isEligibleIn(graphList)) {
-            result.push_back(possible_graph);
-        }
-    }
+    //    vector<Graph> result;
+    //    for (auto possible_graph : this->currentFSG) {
+    //        if (possible_graph.edgeSize() == current_size) {
+    ////            if (possible_graph.isEligibleIn(graphList)) {
+    //                result.push_back(possible_graph);
+    ////            }
+    //        }
+    //    }
+    //
+    //    // Swap instead of assign values to make it faster
+    //    std::swap(result, this->currentFSG);
 
-    // Swap instead of assign values to make it faster
-    std::swap(result, this->currentFSG);
+    removeDuplicateFSG();
 }
 
 vector<Graph> FSGGenerator::getFSG(float threshold_percent) {
@@ -80,24 +104,43 @@ vector<Graph> FSGGenerator::getFSG(float threshold_percent) {
     }
 
     // Return immediately if there is only one graph or the threshold is one, which means every graph meets the criteria
-    if (this->graphList->size() == 1 || this->graphList.getThreshold() <= 1) {
+    if (this->graphList->size() == 1) {
+        return *this->graphList;
+    } 
+    if(this->graphList.getThreshold() <= 1) {
+        // Filter out the graphs that are smaller than currentFSG
+        if (!this->currentFSG.empty()) {
+            auto edge_size = this->currentFSG[0].edgeSize();
+            vector<Graph> graphs;
+
+            for (auto &g : *this->graphList) {
+                if (g.edgeSize() > edge_size) {
+                    graphs.push_back(g);
+                }
+            }
+
+            return graphs;
+        }
+
         return *this->graphList;
     }
 
-    findSmallestFSG();
+    if (this->currentFSG.empty()) {
+        findSmallestFSG();
+    }
 
     // Recurse to get FSG
     vector<Graph> lastFSG;
     int guardian = 0;
-    while (this->currentFSG.size() > 1) {
+    do {
         // Avoid dead loop
         if (guardian++ > this->graphList.getMaxSize()) {
             break;
             //            throw runtime_error("Too many loops in generating FSG of threshold: " + std::to_string(threshold_percent));
         }
 
-        generatePossibleFSG();
-        filterEligibleFSG();
+        generatePossibleFSG(this->currentFSG[0].edgeSize() + 1);
+        //        filterEligibleFSG(); 
         removeDuplicateFSG();
 
         lastFSG.clear();
@@ -108,9 +151,11 @@ vector<Graph> FSGGenerator::getFSG(float threshold_percent) {
         }
 
         if (lastFSG.empty()) {
-            return this->currentFSG;
+            break;
         }
-    }
+
+        std::swap(this->currentFSG, lastFSG);
+    } while (this->currentFSG.size() > 1);
 
     // The only case is when findSmallestFSG() returns an empty one;
     removeDuplicateFSG();
