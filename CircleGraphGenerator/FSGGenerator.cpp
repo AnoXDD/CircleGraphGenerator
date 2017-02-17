@@ -76,7 +76,8 @@ vector<Graph> FSGGenerator::getFSG(float threshold_percent) {
     // Calculate the threshold
     this->graphList.setThresholdPercent(threshold_percent);
 
-    if (this->graphList->size() == 1) {
+    // Return immediately if there is only one graph or the threshold is one, which means every graph meets the criteria
+    if (this->graphList->size() == 1 || this->graphList.getThreshold() == 1) {
         return *this->graphList;
     }    
 

@@ -7,7 +7,7 @@ CircleGraph::~CircleGraph() {}
 bool CircleGraph::addLayer(vector<Graph>& graphs) {
     if (!center) {
         if (graphs.size() > 1) {
-            throw exception("Multiple center graphs detected");
+            throw exception("Multiple center graphs detected. This can be resulted from a set of graphs sharing no FSGs");
         }
         this->center = new CircleGraphNode(graphs[0]);
     } else {
