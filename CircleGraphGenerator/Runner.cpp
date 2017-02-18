@@ -14,7 +14,7 @@ int main() {
         vector<Graph> graphs; {
             // When reading the data, FileReader will also read stop words and instruction on how to group vertices. This makes the compiler recycle those memory after reading all the data
             FileReader file_reader;
-            graphs = file_reader.getGraphs("data_large2.csv");
+            graphs = file_reader.getGraphs("data_group_containing.csv");
         }
 
         CircleGraphGenerator ccgenerator(graphs);

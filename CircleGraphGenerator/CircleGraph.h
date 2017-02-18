@@ -36,6 +36,10 @@ public:
      * Update the weight of all the edges of this circle graph
      */
     void updateWeight(CircleGraphGenerator::EdgeFrequencyMap& freq);
+    /**
+     * Remove duplicate edges in the graph
+     */
+    void removeDuplicate();
 };
 
 std::ostream& operator<<(std::ostream& os, const CircleGraph& graph);

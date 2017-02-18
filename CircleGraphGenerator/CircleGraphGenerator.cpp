@@ -35,8 +35,12 @@ void CircleGraphGenerator::processGraphWeight(CircleGraph& circle_graph) {
 }
 
 CircleGraph CircleGraphGenerator::get() {
-    FSGGenerator fsg_generator(&(this->graphs));
     CircleGraph circle_graph;
+    if (this->graphs.empty()) {
+        return circle_graph;
+    }
+
+    FSGGenerator fsg_generator(&(this->graphs));
 
     vector<Graph> lastResult;
 
@@ -51,6 +55,7 @@ CircleGraph CircleGraphGenerator::get() {
         std::swap(results, lastResult);
     }
 
+    circle_graph.removeDuplicate();
     this->processGraphWeight(circle_graph);
 
     return circle_graph;

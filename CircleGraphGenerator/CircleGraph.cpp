@@ -32,8 +32,59 @@ void CircleGraph::updateWeight(CircleGraphGenerator::EdgeFrequencyMap& freq) {
     this->center->updateWeight(freq);
 }
 
+void CircleGraph::removeDuplicate() {
+    if (!center) {
+        return;
+    }
+
+    Graph master = center->graph;
+    queue<CircleGraphNode*> q;
+    q.push(center);
+
+    while (!q.empty()) {
+        auto top = q.front();
+        q.pop();
+
+        auto& children = top->children;
+        for (auto i = 0; i < children.size(); ++i) {
+            auto& child = children[i];
+            // Test if the graph of this child has anything overlapped
+            auto& child_graph = child->graph.getList();
+
+            vector<Graph::Edge> duplicates;
+            for (auto p : child_graph) {
+                if (master.hasEdge(p.first)) {
+                    duplicates.push_back(p.first);
+                }
+            }
+
+            for (auto dup : duplicates) {
+                child->graph.remove(dup);
+            }
+
+            // Remove it from the list if it's empty
+            if (child->graph.empty()) {
+                children.erase(children.begin() + i);
+                --i;
+            } else {
+                // Put it in the queue to finish DFS part
+                q.push(child);
+            }
+        }
+
+        // Add all the children graph to the master
+        for (auto child : children) {
+            master = master + child->graph;
+        }
+    }
+}
+
 std::ostream& operator<<(std::ostream& os, const CircleGraph& graph) {
     CircleGraphNode* center = graph.getCenter();
+    if (!center) {
+        return os;
+    }
+
     queue<CircleGraphNode*> q;
     q.push(center);
 

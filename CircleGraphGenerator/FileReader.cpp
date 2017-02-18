@@ -105,7 +105,7 @@ vector<Graph> FileReader::getGraphs(string filename) {
 
         // Sanitize the words
         if (stop_words.count(s1) || stop_words.count(s2)) {
-//            continue;
+            continue;
         }
 
         // Map to another word

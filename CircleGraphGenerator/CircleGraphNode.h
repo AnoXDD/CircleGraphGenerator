@@ -16,6 +16,7 @@ class CircleGraphNode {
     int level;
 
     friend std::ostream& operator<<(std::ostream& os, const CircleGraph& graph);
+    friend class CircleGraph;
 
 public:
     CircleGraphNode(Graph& g) : CircleGraphNode(g, 0) {}
